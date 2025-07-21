@@ -32,7 +32,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_21_141220) do
     t.index ["status"], name: "index_appointments_on_status"
     t.check_constraint "appointment_date >= (CURRENT_TIMESTAMP - 'P2Y'::interval)", name: "appointments_reasonable_date_check"
     t.check_constraint "duration_minutes > 0 AND duration_minutes <= 480", name: "appointments_duration_check"
-    t.check_constraint "status::text = ANY (ARRAY['scheduled'::character varying, 'confirmed'::character varying, 'completed'::character varying, 'cancelled'::character varying, 'no_show'::character varying]::text[])", name: "appointments_status_check"
+    t.check_constraint "status::text = ANY (ARRAY['scheduled'::character varying::text, 'confirmed'::character varying::text, 'completed'::character varying::text, 'cancelled'::character varying::text, 'no_show'::character varying::text])", name: "appointments_status_check"
   end
 
   create_table "doctors", force: :cascade do |t|

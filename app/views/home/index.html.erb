@@ -1,0 +1,204 @@
+<!-- Healthcare Portal Header -->
+<div class="medical-gradient text-white">
+  <div class="container mx-auto px-6 py-8">
+    <div class="text-center">
+      <h1 class="text-4xl font-bold mb-4">Healthcare Portal</h1>
+      <p class="text-xl text-blue-100 mb-8">Find hospitals and clinics near you</p>
+      
+      <!-- Statistics Cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+          <div class="text-2xl font-bold"><%= @total_hospitals %></div>
+          <div class="text-sm text-blue-100">Hospitals</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+          <div class="text-2xl font-bold"><%= @total_clinics %></div>
+          <div class="text-sm text-blue-100">Clinics</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+          <div class="text-2xl font-bold"><%= @total_doctors %></div>
+          <div class="text-sm text-blue-100">Doctors</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+          <div class="text-2xl font-bold"><%= @total_patients %></div>
+          <div class="text-sm text-blue-100">Patients</div>
+        </div>
+      </div>
+      
+      <!-- Search Form -->
+      <%= form_with url: root_path, method: :get, local: true, class: "max-w-2xl mx-auto" do |form| %>
+        <div class="flex gap-4">
+          <%= form.text_field :search, 
+                              value: @search_query,
+                              placeholder: "Search hospitals and clinics by name, address, or city...",
+                              class: "form-input flex-1 text-gray-900" %>
+          <%= form.submit "Search", class: "btn-secondary px-6" %>
+          <% if @search_query.present? %>
+            <%= link_to "Clear", root_path, class: "btn-outline px-6" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container mx-auto px-6 py-8">
+  <% if @search_query.present? %>
+    <div class="mb-6">
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <p class="text-blue-800">
+          <strong>Search results for:</strong> "<%= @search_query %>"
+          <span class="text-sm text-blue-600 ml-2">
+            (<%= @hospitals.count + @clinics.count %> results found)
+          </span>
+        </p>
+      </div>
+    </div>
+  <% end %>
+  
+  <!-- Hospitals Section -->
+  <div class="mb-12">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold text-gray-900 flex items-center">
+        <svg class="w-6 h-6 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+        </svg>
+        Hospitals
+        <span class="text-lg font-normal text-gray-500 ml-2">(<%= @hospitals.count %>)</span>
+      </h2>
+      <%= link_to "View All", hospitals_path, class: "btn-outline" %>
+    </div>
+    
+    <% if @hospitals.any? %>
+      <div class="card overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capacity</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @hospitals.each do |hospital| %>
+                <tr class="hover:bg-gray-50 transition-colors duration-150">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900"><%= hospital.name %></div>
+                    <div class="text-sm text-gray-500">Hospital</div>
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="text-sm text-gray-900"><%= hospital.address %></div>
+                    <div class="text-sm text-gray-500"><%= hospital.city %>, <%= hospital.state %> <%= hospital.zip_code %></div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900"><%= hospital.phone %></div>
+                    <div class="text-sm text-gray-500"><%= hospital.email %></div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="badge-primary"><%= hospital.bed_capacity %> beds</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <%= link_to "View", hospital_path(hospital), class: "text-primary-600 hover:text-primary-900 mr-3" %>
+                    <%= link_to "Doctors", hospital_doctors_path(hospital), class: "text-secondary-600 hover:text-secondary-900" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% else %>
+      <div class="card text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+        </svg>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No hospitals found</h3>
+        <p class="text-gray-500 mb-4">
+          <% if @search_query.present? %>
+            No hospitals match your search criteria.
+          <% else %>
+            No hospitals are currently registered in the system.
+          <% end %>
+        </p>
+        <%= link_to "Add Hospital", new_hospital_path, class: "btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+  
+  <!-- Clinics Section -->
+  <div>
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold text-gray-900 flex items-center">
+        <svg class="w-6 h-6 mr-2 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        Clinics
+        <span class="text-lg font-normal text-gray-500 ml-2">(<%= @clinics.count %>)</span>
+      </h2>
+      <%= link_to "View All", clinics_path, class: "btn-outline" %>
+    </div>
+    
+    <% if @clinics.any? %>
+      <div class="card overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Specialty</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @clinics.each do |clinic| %>
+                <tr class="hover:bg-gray-50 transition-colors duration-150">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900"><%= clinic.name %></div>
+                    <div class="text-sm text-gray-500">Clinic</div>
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="text-sm text-gray-900"><%= clinic.address %></div>
+                    <div class="text-sm text-gray-500"><%= clinic.city %>, <%= clinic.state %> <%= clinic.zip_code %></div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900"><%= clinic.phone %></div>
+                    <div class="text-sm text-gray-500"><%= clinic.email %></div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="badge-secondary"><%= clinic.specialty_type || "General" %></span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <%= link_to "View", clinic_path(clinic), class: "text-primary-600 hover:text-primary-900 mr-3" %>
+                    <%= link_to "Doctors", clinic_doctors_path(clinic), class: "text-secondary-600 hover:text-secondary-900" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% else %>
+      <div class="card text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No clinics found</h3>
+        <p class="text-gray-500 mb-4">
+          <% if @search_query.present? %>
+            No clinics match your search criteria.
+          <% else %>
+            No clinics are currently registered in the system.
+          <% end %>
+        </p>
+        <%= link_to "Add Clinic", new_clinic_path, class: "btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+</div>
