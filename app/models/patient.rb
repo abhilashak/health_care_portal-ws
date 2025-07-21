@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Patient < ApplicationRecord
+  # Associations
+  has_many :appointments, dependent: :destroy
+
   # Validations
   validates :first_name, presence: true
   validates :last_name, presence: true

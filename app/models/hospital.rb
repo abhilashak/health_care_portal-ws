@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Hospital < HealthcareFacility
+  # Associations
+  has_many :doctors, foreign_key: "hospital_id", dependent: :nullify
+
   # Constants
   HOSPITAL_TYPES = %w[general childrens teaching research military specialty other].freeze
   HOSPITAL_SPECIALTIES = [

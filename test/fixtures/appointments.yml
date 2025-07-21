@@ -1,0 +1,33 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+scheduled_appointment:
+  doctor: cardiologist
+  patient: adult_patient
+  appointment_date: <%= 2.days.from_now.beginning_of_hour %>
+  status: scheduled
+  duration_minutes: 30
+  notes: "Regular checkup appointment"
+
+confirmed_appointment:
+  doctor: neurologist
+  patient: senior_patient
+  appointment_date: <%= 3.days.from_now.beginning_of_hour + 2.hours %>
+  status: confirmed
+  duration_minutes: 45
+  notes: "Follow-up consultation"
+
+completed_appointment:
+  doctor: pediatrician
+  patient: minor_patient
+  appointment_date: <%= 1.week.ago.beginning_of_hour %>
+  status: completed
+  duration_minutes: 30
+  notes: "Vaccination appointment - completed successfully"
+
+cancelled_appointment:
+  doctor: family_doctor
+  patient: adult_patient
+  appointment_date: <%= 1.day.from_now.beginning_of_hour + 4.hours %>
+  status: cancelled
+  duration_minutes: 60
+  notes: "Patient requested cancellation"

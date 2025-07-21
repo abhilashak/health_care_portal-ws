@@ -10,9 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_21_100953) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_21_111033) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "appointments", force: :cascade do |t|
+    t.bigint "doctor_id", null: false
+    t.bigint "patient_id", null: false
+    t.datetime "appointment_date", null: false
+    t.string "status", default: "scheduled", null: false
+    t.text "notes"
+    t.integer "duration_minutes", default: 30
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["appointment_date"], name: "index_appointments_on_appointment_date"
+    t.index ["doctor_id", "appointment_date"], name: "index_appointments_on_doctor_and_date"
+    t.index ["doctor_id"], name: "index_appointments_on_doctor_id"
+    t.index ["patient_id", "appointment_date"], name: "index_appointments_on_patient_and_date"
+    t.index ["patient_id"], name: "index_appointments_on_patient_id"
+    t.index ["status"], name: "index_appointments_on_status"
+    t.check_constraint "appointment_date >= (CURRENT_TIMESTAMP - 'P2Y'::interval)", name: "appointments_reasonable_date_check"
+    t.check_constraint "duration_minutes > 0 AND duration_minutes <= 480", name: "appointments_duration_check"
+    t.check_constraint "status::text = ANY (ARRAY['scheduled'::character varying, 'confirmed'::character varying, 'completed'::character varying, 'cancelled'::character varying, 'no_show'::character varying]::text[])", name: "appointments_status_check"
+  end
 
   create_table "doctors", force: :cascade do |t|
     t.string "first_name", null: false
@@ -89,6 +109,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_21_100953) do
     t.check_constraint "email::text ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,}$'::text", name: "patients_email_format_check"
   end
 
+  add_foreign_key "appointments", "doctors"
+  add_foreign_key "appointments", "patients"
   add_foreign_key "doctors", "healthcare_facilities", column: "clinic_id", on_delete: :nullify
   add_foreign_key "doctors", "healthcare_facilities", column: "hospital_id", on_delete: :nullify
 end

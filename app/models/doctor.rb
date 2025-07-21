@@ -9,6 +9,7 @@ class Doctor < ApplicationRecord
   # Associations
   belongs_to :hospital, class_name: "HealthcareFacility", foreign_key: "hospital_id", optional: true
   belongs_to :clinic, class_name: "HealthcareFacility", foreign_key: "clinic_id", optional: true
+  has_many :appointments, dependent: :destroy
 
   # Scopes
   scope :by_specialization, ->(specialization) { where(specialization: specialization) }
