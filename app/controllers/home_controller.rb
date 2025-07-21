@@ -4,7 +4,7 @@ class HomeController < ApplicationController
 
     # Get hospitals with optional search
     @hospitals = if @search_query.present?
-      Hospital.where("name ILIKE ? OR address ILIKE ? OR city ILIKE ?",
+      Hospital.where("name ILIKE ? OR address ILIKE ? OR email ILIKE ?", 
                      "%#{@search_query}%", "%#{@search_query}%", "%#{@search_query}%")
               .order(:name)
     else
@@ -13,7 +13,7 @@ class HomeController < ApplicationController
 
     # Get clinics with optional search
     @clinics = if @search_query.present?
-      Clinic.where("name ILIKE ? OR address ILIKE ? OR city ILIKE ?",
+      Clinic.where("name ILIKE ? OR address ILIKE ? OR email ILIKE ?", 
                    "%#{@search_query}%", "%#{@search_query}%", "%#{@search_query}%")
              .order(:name)
     else

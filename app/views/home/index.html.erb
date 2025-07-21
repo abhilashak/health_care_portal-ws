@@ -57,32 +57,53 @@
     </div>
   <% end %>
   
-  <!-- Hospitals Section -->
-  <div class="mb-12">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-bold text-gray-900 flex items-center">
-        <svg class="w-6 h-6 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-        </svg>
-        Hospitals
-        <span class="text-lg font-normal text-gray-500 ml-2">(<%= @hospitals.count %>)</span>
-      </h2>
-      <%= link_to "View All", hospitals_path, class: "btn-outline" %>
+  <!-- Tabbed Interface -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <!-- Tab Navigation -->
+    <div class="border-b border-gray-200">
+      <nav class="flex space-x-8 px-6" aria-label="Tabs">
+        <button onclick="switchTab('hospitals')" id="hospitals-tab" class="tab-button active py-4 px-1 border-b-2 font-medium text-sm focus:outline-none transition-colors duration-200">
+          <div class="flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+            </svg>
+            Hospitals
+            <span class="ml-2 bg-primary-100 text-primary-600 py-1 px-2 rounded-full text-xs font-medium"><%= @hospitals.count %></span>
+          </div>
+        </button>
+        <button onclick="switchTab('clinics')" id="clinics-tab" class="tab-button py-4 px-1 border-b-2 font-medium text-sm focus:outline-none transition-colors duration-200">
+          <div class="flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            Clinics
+            <span class="ml-2 bg-secondary-100 text-secondary-600 py-1 px-2 rounded-full text-xs font-medium"><%= @clinics.count %></span>
+          </div>
+        </button>
+      </nav>
     </div>
     
-    <% if @hospitals.any? %>
-      <div class="card overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capacity</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <!-- Hospitals Tab Panel -->
+      <div id="hospitals-panel" class="tab-panel active p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-gray-900">Hospital Listings</h3>
+          <%= link_to "Add New Hospital", new_hospital_path, class: "btn-primary" %>
+        </div>
+        
+        <% if @hospitals.any? %>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capacity</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
             <tbody class="bg-white divide-y divide-gray-200">
               <% @hospitals.each do |hospital| %>
                 <tr class="hover:bg-gray-50 transition-colors duration-150">
@@ -92,69 +113,67 @@
                   </td>
                   <td class="px-6 py-4">
                     <div class="text-sm text-gray-900"><%= hospital.address %></div>
-                    <div class="text-sm text-gray-500"><%= hospital.city %>, <%= hospital.state %> <%= hospital.zip_code %></div>
+                    <% if hospital.website.present? %>
+                      <div class="text-sm text-gray-500"><%= hospital.website %></div>
+                    <% end %>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm text-gray-900"><%= hospital.phone %></div>
                     <div class="text-sm text-gray-500"><%= hospital.email %></div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="badge-primary"><%= hospital.bed_capacity %> beds</span>
+                    <% if hospital.number_of_doctors.present? %>
+                      <span class="badge-primary"><%= hospital.number_of_doctors %> doctors</span>
+                    <% else %>
+                      <span class="badge-secondary">Active</span>
+                    <% end %>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <%= link_to "View", hospital_path(hospital), class: "text-primary-600 hover:text-primary-900 mr-3" %>
-                    <%= link_to "Doctors", hospital_doctors_path(hospital), class: "text-secondary-600 hover:text-secondary-900" %>
+                    <%= link_to "Doctors", doctors_hospital_path(hospital), class: "text-secondary-600 hover:text-secondary-900" %>
                   </td>
                 </tr>
               <% end %>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <div class="text-center py-12">
+            <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+            </svg>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">No hospitals found</h3>
+            <p class="text-gray-500 mb-4">
+              <% if @search_query.present? %>
+                No hospitals match your search criteria.
+              <% else %>
+                No hospitals are currently registered in the system.
+              <% end %>
+            </p>
+            <%= link_to "Add Hospital", new_hospital_path, class: "btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+      
+      <!-- Clinics Tab Panel -->
+      <div id="clinics-panel" class="tab-panel hidden p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-gray-900">Clinic Listings</h3>
+          <%= link_to "Add New Clinic", new_clinic_path, class: "btn-primary" %>
         </div>
-      </div>
-    <% else %>
-      <div class="card text-center py-12">
-        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-        </svg>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">No hospitals found</h3>
-        <p class="text-gray-500 mb-4">
-          <% if @search_query.present? %>
-            No hospitals match your search criteria.
-          <% else %>
-            No hospitals are currently registered in the system.
-          <% end %>
-        </p>
-        <%= link_to "Add Hospital", new_hospital_path, class: "btn-primary" %>
-      </div>
-    <% end %>
-  </div>
-  
-  <!-- Clinics Section -->
-  <div>
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-bold text-gray-900 flex items-center">
-        <svg class="w-6 h-6 mr-2 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-        </svg>
-        Clinics
-        <span class="text-lg font-normal text-gray-500 ml-2">(<%= @clinics.count %>)</span>
-      </h2>
-      <%= link_to "View All", clinics_path, class: "btn-outline" %>
-    </div>
-    
-    <% if @clinics.any? %>
-      <div class="card overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Specialty</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
+        
+        <% if @clinics.any? %>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Specialty</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
             <tbody class="bg-white divide-y divide-gray-200">
               <% @clinics.each do |clinic| %>
                 <tr class="hover:bg-gray-50 transition-colors duration-150">
@@ -164,41 +183,122 @@
                   </td>
                   <td class="px-6 py-4">
                     <div class="text-sm text-gray-900"><%= clinic.address %></div>
-                    <div class="text-sm text-gray-500"><%= clinic.city %>, <%= clinic.state %> <%= clinic.zip_code %></div>
+                    <% if clinic.website.present? %>
+                      <div class="text-sm text-gray-500"><%= clinic.website %></div>
+                    <% end %>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm text-gray-900"><%= clinic.phone %></div>
                     <div class="text-sm text-gray-500"><%= clinic.email %></div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="badge-secondary"><%= clinic.specialty_type || "General" %></span>
+                    <% if clinic.specialties.present? && clinic.specialties.any? %>
+                      <span class="badge-secondary"><%= clinic.specialties.first %></span>
+                    <% else %>
+                      <span class="badge-secondary">General</span>
+                    <% end %>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <%= link_to "View", clinic_path(clinic), class: "text-primary-600 hover:text-primary-900 mr-3" %>
-                    <%= link_to "Doctors", clinic_doctors_path(clinic), class: "text-secondary-600 hover:text-secondary-900" %>
+                    <%= link_to "Doctors", doctors_clinic_path(clinic), class: "text-secondary-600 hover:text-secondary-900" %>
                   </td>
                 </tr>
               <% end %>
-            </tbody>
-          </table>
-        </div>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <div class="text-center py-12">
+            <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">No clinics found</h3>
+            <p class="text-gray-500 mb-4">
+              <% if @search_query.present? %>
+                No clinics match your search criteria.
+              <% else %>
+                No clinics are currently registered in the system.
+              <% end %>
+            </p>
+            <%= link_to "Add Clinic", new_clinic_path, class: "btn-primary" %>
+          </div>
+        <% end %>
       </div>
-    <% else %>
-      <div class="card text-center py-12">
-        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-        </svg>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">No clinics found</h3>
-        <p class="text-gray-500 mb-4">
-          <% if @search_query.present? %>
-            No clinics match your search criteria.
-          <% else %>
-            No clinics are currently registered in the system.
-          <% end %>
-        </p>
-        <%= link_to "Add Clinic", new_clinic_path, class: "btn-primary" %>
-      </div>
-    <% end %>
+    </div>
   </div>
 </div>
+
+<!-- JavaScript for Tab Functionality -->
+<script>
+  function switchTab(tabName) {
+    // Hide all tab panels
+    document.querySelectorAll('.tab-panel').forEach(panel => {
+      panel.classList.add('hidden');
+      panel.classList.remove('active');
+    });
+    
+    // Remove active class from all tab buttons
+    document.querySelectorAll('.tab-button').forEach(button => {
+      button.classList.remove('active');
+      button.classList.add('text-gray-500', 'hover:text-gray-700', 'border-transparent');
+      button.classList.remove('text-primary-600', 'border-primary-500');
+    });
+    
+    // Show selected tab panel
+    const selectedPanel = document.getElementById(tabName + '-panel');
+    if (selectedPanel) {
+      selectedPanel.classList.remove('hidden');
+      selectedPanel.classList.add('active');
+    }
+    
+    // Activate selected tab button
+    const selectedTab = document.getElementById(tabName + '-tab');
+    if (selectedTab) {
+      selectedTab.classList.add('active');
+      selectedTab.classList.remove('text-gray-500', 'hover:text-gray-700', 'border-transparent');
+      selectedTab.classList.add('text-primary-600', 'border-primary-500');
+    }
+  }
+  
+  // Initialize tabs on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    // Set default active states
+    const activeTab = document.querySelector('.tab-button.active');
+    if (activeTab) {
+      activeTab.classList.add('text-primary-600', 'border-primary-500');
+      activeTab.classList.remove('text-gray-500', 'hover:text-gray-700', 'border-transparent');
+    }
+    
+    // Set inactive tab states
+    document.querySelectorAll('.tab-button:not(.active)').forEach(button => {
+      button.classList.add('text-gray-500', 'hover:text-gray-700', 'border-transparent');
+      button.classList.remove('text-primary-600', 'border-primary-500');
+    });
+  });
+</script>
+
+<!-- Custom CSS for Tab Styling -->
+<style>
+  .tab-button.active {
+    color: #2563eb;
+    border-color: #2563eb;
+  }
+  
+  .tab-button:not(.active) {
+    color: #6b7280;
+    border-color: transparent;
+  }
+  
+  .tab-button:not(.active):hover {
+    color: #374151;
+  }
+  
+  .tab-panel.active {
+    display: block;
+  }
+  
+  .tab-panel.hidden {
+    display: none;
+  }
+</style>
 </div>

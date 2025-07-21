@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Healthcare Portal Routes
-  root "hospitals#index"
+  # root "hospitals#index"
 
   # Hospital routes with custom actions
   resources :hospitals do
