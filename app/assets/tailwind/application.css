@@ -1,1 +1,279 @@
 @import "tailwindcss";
+
+/* Tailwind v4 Theme Configuration */
+@theme {
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+  --color-primary-950: #172554;
+  
+  --color-secondary-50: #f0f9ff;
+  --color-secondary-100: #e0f2fe;
+  --color-secondary-200: #bae6fd;
+  --color-secondary-300: #7dd3fc;
+  --color-secondary-400: #38bdf8;
+  --color-secondary-500: #0ea5e9;
+  --color-secondary-600: #0284c7;
+  --color-secondary-700: #0369a1;
+  --color-secondary-800: #075985;
+  --color-secondary-900: #0c4a6e;
+  --color-secondary-950: #082f49;
+  
+  --color-accent-50: #ecfeff;
+  --color-accent-100: #cffafe;
+  --color-accent-200: #a5f3fc;
+  --color-accent-300: #67e8f9;
+  --color-accent-400: #22d3ee;
+  --color-accent-500: #06b6d4;
+  --color-accent-600: #0891b2;
+  --color-accent-700: #0e7490;
+  --color-accent-800: #155e75;
+  --color-accent-900: #164e63;
+  --color-accent-950: #083344;
+  
+  --color-healthcare-teal-50: #f0fdfa;
+  --color-healthcare-teal-100: #ccfbf1;
+  --color-healthcare-teal-200: #99f6e4;
+  --color-healthcare-teal-300: #5eead4;
+  --color-healthcare-teal-400: #2dd4bf;
+  --color-healthcare-teal-500: #14b8a6;
+  --color-healthcare-teal-600: #0d9488;
+  --color-healthcare-teal-700: #0f766e;
+  --color-healthcare-teal-800: #115e59;
+  --color-healthcare-teal-900: #134e4a;
+  --color-healthcare-teal-950: #042f2e;
+  
+  --color-healthcare-red-50: #fef2f2;
+  --color-healthcare-red-100: #fee2e2;
+  --color-healthcare-red-200: #fecaca;
+  --color-healthcare-red-300: #fca5a5;
+  --color-healthcare-red-400: #f87171;
+  --color-healthcare-red-500: #ef4444;
+  --color-healthcare-red-600: #dc2626;
+  --color-healthcare-red-700: #b91c1c;
+  --color-healthcare-red-800: #991b1b;
+  --color-healthcare-red-900: #7f1d1d;
+  --color-healthcare-red-950: #450a0a;
+  
+  --color-healthcare-green-50: #f0fdf4;
+  --color-healthcare-green-100: #dcfce7;
+  --color-healthcare-green-200: #bbf7d0;
+  --color-healthcare-green-300: #86efac;
+  --color-healthcare-green-400: #4ade80;
+  --color-healthcare-green-500: #22c55e;
+  --color-healthcare-green-600: #16a34a;
+  --color-healthcare-green-700: #15803d;
+  --color-healthcare-green-800: #166534;
+  --color-healthcare-green-900: #14532d;
+  --color-healthcare-green-950: #052e16;
+}
+
+/* Custom Healthcare UI Components */
+@layer components {
+  /* Primary Button - Light Blue Theme */
+  .btn-primary {
+    @apply bg-primary-500 hover:bg-primary-600 focus:bg-primary-700 active:bg-primary-800 text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 shadow-sm;
+  }
+
+  .btn-primary-lg {
+    @apply bg-primary-500 hover:bg-primary-600 focus:bg-primary-700 active:bg-primary-800 text-white font-medium py-3 px-6 rounded-xl transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 shadow-md text-lg;
+  }
+
+  /* Secondary Button - Sky Blue */
+  .btn-secondary {
+    @apply bg-secondary-100 hover:bg-secondary-200 focus:bg-secondary-300 text-secondary-700 font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2 border border-secondary-200;
+  }
+
+  /* Outline Button */
+  .btn-outline {
+    @apply bg-transparent hover:bg-primary-50 focus:bg-primary-100 text-primary-600 font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 border border-primary-300 hover:border-primary-400;
+  }
+
+  /* Success Button - Healthcare Green */
+  .btn-success {
+    @apply bg-healthcare-green-500 hover:bg-healthcare-green-600 focus:bg-healthcare-green-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-healthcare-green-500 focus:ring-offset-2 shadow-sm;
+  }
+
+  /* Danger Button - Healthcare Red */
+  .btn-danger {
+    @apply bg-healthcare-red-500 hover:bg-healthcare-red-600 focus:bg-healthcare-red-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-healthcare-red-500 focus:ring-offset-2 shadow-sm;
+  }
+
+  /* Card Components */
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden;
+  }
+
+  .card-header {
+    @apply px-6 py-4 border-b border-gray-100 bg-gray-50;
+  }
+
+  .card-body {
+    @apply px-6 py-4;
+  }
+
+  .card-footer {
+    @apply px-6 py-4 border-t border-gray-100 bg-gray-50;
+  }
+
+  /* Healthcare specific cards */
+  .patient-card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-200 cursor-pointer border-l-4 border-l-primary-400;
+  }
+
+  .doctor-card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-200 cursor-pointer border-l-4 border-l-secondary-400;
+  }
+
+  .appointment-card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-200 cursor-pointer border-l-4 border-l-accent-400;
+  }
+
+  /* Form Elements */
+  .form-input {
+    @apply block w-full px-3 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-200 text-gray-900 placeholder-gray-500;
+  }
+
+  .form-select {
+    @apply block w-full px-3 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-200 text-gray-900 bg-white;
+  }
+
+  .form-textarea {
+    @apply block w-full px-3 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-200 text-gray-900 placeholder-gray-500 resize-y;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 mb-2;
+  }
+
+  .form-error {
+    @apply text-healthcare-red-600 text-sm mt-1;
+  }
+
+  /* Status Badges */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800;
+  }
+  
+  .badge-secondary {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-100 text-secondary-800;
+  }
+  
+  .badge-success {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-healthcare-green-100 text-healthcare-green-800;
+  }
+  
+  .badge-warning {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800;
+  }
+  
+  .badge-danger {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-healthcare-red-100 text-healthcare-red-800;
+  }
+  
+  .badge-info {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent-100 text-accent-800;
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply text-gray-600 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200;
+  }
+
+  .nav-link-active {
+    @apply bg-primary-100 text-primary-700 px-3 py-2 rounded-md text-sm font-medium;
+  }
+
+  /* Healthcare Status Colors */
+  .status-scheduled {
+    @apply text-primary-600 bg-primary-50 border-primary-200;
+  }
+
+  .status-confirmed {
+    @apply text-secondary-600 bg-secondary-50 border-secondary-200;
+  }
+
+  .status-completed {
+    @apply text-healthcare-green-600 bg-healthcare-green-50 border-healthcare-green-200;
+  }
+
+  .status-cancelled {
+    @apply text-healthcare-red-600 bg-healthcare-red-50 border-healthcare-red-200;
+  }
+
+  .status-emergency {
+    @apply text-healthcare-red-700 bg-healthcare-red-100 border-healthcare-red-300 font-semibold;
+  }
+}
+
+/* Custom Utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-primary {
+    scrollbar-color: #60a5fa #f3f4f6;
+  }
+
+  /* Healthcare specific utilities */
+  .medical-gradient {
+    background: linear-gradient(135deg, #3b82f6, #0ea5e9);
+  }
+  
+  .healthcare-pattern {
+    background-image: radial-gradient(circle at 1px 1px, #bfdbfe 1px, transparent 0);
+    background-size: 20px 20px;
+  }
+}
+
+/* Custom Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Print Styles for Healthcare Documents */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-break {
+    page-break-after: always;
+  }
+
+  .print-avoid-break {
+    page-break-inside: avoid;
+  }
+}
