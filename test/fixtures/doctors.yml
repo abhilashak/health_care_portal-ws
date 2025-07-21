@@ -1,0 +1,53 @@
+# Doctors Fixtures
+
+# Hospital doctors
+cardiologist:
+  first_name: "John"
+  last_name: "Smith"
+  specialization: "Cardiology"
+  hospital_id: <%= ActiveRecord::FixtureSet.identify(:general_hospital) %>
+  clinic_id: null
+
+neurologist:
+  first_name: "Sarah"
+  last_name: "Johnson"
+  specialization: "Neurology"
+  hospital_id: <%= ActiveRecord::FixtureSet.identify(:general_hospital) %>
+  clinic_id: null
+
+pediatrician:
+  first_name: "Michael"
+  last_name: "Chen"
+  specialization: "Pediatrics"
+  hospital_id: <%= ActiveRecord::FixtureSet.identify(:childrens_hospital) %>
+  clinic_id: null
+
+# Clinic doctors
+family_doctor:
+  first_name: "Emily"
+  last_name: "Rodriguez"
+  specialization: "Family Medicine"
+  hospital_id: null
+  clinic_id: <%= ActiveRecord::FixtureSet.identify(:family_clinic) %>
+
+urgent_care_doctor:
+  first_name: "James"
+  last_name: "Wilson"
+  specialization: "Emergency Medicine"
+  hospital_id: null
+  clinic_id: <%= ActiveRecord::FixtureSet.identify(:urgent_care) %>
+
+dentist:
+  first_name: "Lisa"
+  last_name: "Park"
+  specialization: "Dentistry"
+  hospital_id: null
+  clinic_id: <%= ActiveRecord::FixtureSet.identify(:dental_clinic) %>
+
+# Doctor working at both hospital and clinic
+dual_doctor:
+  first_name: "David"
+  last_name: "Brown"
+  specialization: "Internal Medicine"
+  hospital_id: <%= ActiveRecord::FixtureSet.identify(:teaching_hospital) %>
+  clinic_id: <%= ActiveRecord::FixtureSet.identify(:family_clinic) %>

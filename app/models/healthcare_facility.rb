@@ -9,22 +9,22 @@ class HealthcareFacility < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :address, presence: true
   validates :phone, presence: true, uniqueness: true,
-                    format: { with: /\A\+?[\d\s-()]{10,}\z/, message: 'must be a valid phone number' }
+                    format: { with: /\A\+?[\d\s\-()]{10,}\z/, message: "must be a valid phone number" }
   validates :email, presence: true, uniqueness: true,
-                    format: { with: URI::MailTo::EMAIL_REGEXP, message: 'must be a valid email address' }
+                    format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }
   validates :registration_number, presence: true, uniqueness: true
   validates :status, inclusion: { in: STATUSES, message: "%{value} is not a valid status" }
   validates :facility_type, inclusion: { in: FACILITY_TYPES, message: "%{value} is not a valid facility type" }, allow_nil: true
 
   # Scopes
   scope :active, -> { where(active: true) }
-  scope :hospitals, -> { where(type: 'Hospital') }
-  scope :clinics, -> { where(type: 'Clinic') }
+  scope :hospitals, -> { where(type: "Hospital") }
+  scope :clinics, -> { where(type: "Clinic") }
   scope :accepting_new_patients, -> { where(accepts_new_patients: true) }
   scope :accepting_insurance, -> { where(accepts_insurance: true) }
-  scope :search_by_name, ->(query) { where('name ILIKE ?', "%#{query}%") }
-  scope :by_specialty, ->(specialty) { where('? = ANY(specialties)', specialty) }
-  scope :by_service, ->(service) { where('? = ANY(services)', service) }
+  scope :search_by_name, ->(query) { where("name ILIKE ?", "%#{query}%") }
+  scope :by_specialty, ->(specialty) { where("? = ANY(specialties)", specialty) }
+  scope :by_service, ->(service) { where("? = ANY(services)", service) }
 
   # Callbacks
   before_validation :normalize_phone_number
@@ -32,19 +32,19 @@ class HealthcareFacility < ApplicationRecord
 
   # Instance Methods
   def active?
-    active && status == 'active'
+    active && status == "active"
   end
 
   def hospital?
-    type == 'Hospital'
+    type == "Hospital"
   end
 
   def clinic?
-    type == 'Clinic'
+    type == "Clinic"
   end
 
   def display_address
-    address.gsub("\n", ', ')
+    address.gsub("\n", ", ")
   end
 
   def primary_contact
@@ -52,14 +52,14 @@ class HealthcareFacility < ApplicationRecord
   end
 
   def emergency_contact_info
-    emergency_contact.present? ? "#{emergency_contact} (#{emergency_phone})" : 'Not specified'
+    emergency_contact.present? ? "#{emergency_contact} (#{emergency_phone})" : "Not specified"
   end
 
   private
 
   def normalize_phone_number
     return if phone.blank?
-    self.phone = phone.gsub(/[^0-9+]/, '')
+    self.phone = phone.gsub(/[^0-9+]/, "")
   end
 
   def normalize_email

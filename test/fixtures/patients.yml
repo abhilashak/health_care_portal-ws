@@ -1,0 +1,37 @@
+# Patients Fixtures
+
+adult_patient:
+  first_name: "Alice"
+  last_name: "Johnson"
+  date_of_birth: <%= 30.years.ago.to_date %>
+  email: "alice.johnson@email.com"
+
+senior_patient:
+  first_name: "Robert"
+  last_name: "Smith"
+  date_of_birth: <%= 70.years.ago.to_date %>
+  email: "robert.smith@email.com"
+
+minor_patient:
+  first_name: "Emma"
+  last_name: "Wilson"
+  date_of_birth: <%= 12.years.ago.to_date %>
+  email: "emma.wilson@email.com"
+
+young_adult:
+  first_name: "Michael"
+  last_name: "Brown"
+  date_of_birth: <%= 25.years.ago.to_date %>
+  email: "michael.brown@email.com"
+
+middle_aged:
+  first_name: "Jennifer"
+  last_name: "Davis"
+  date_of_birth: <%= 45.years.ago.to_date %>
+  email: "jennifer.davis@email.com"
+
+teen_patient:
+  first_name: "Christopher"
+  last_name: "Garcia"
+  date_of_birth: <%= 16.years.ago.to_date %>
+  email: "christopher.garcia@email.com"

@@ -1,0 +1,194 @@
+# Healthcare Facilities Fixtures
+
+# Hospitals
+general_hospital:
+  type: Hospital
+  name: "General Medical Center"
+  address: "123 Hospital Drive\nMedical City, CA 90210"
+  phone: "+1-555-123-4567"
+  email: "info@generalmedical.com"
+  registration_number: "HOSP001"
+  facility_type: "general"
+  active: true
+  status: "active"
+  specialties: ["Cardiology", "Neurology", "Emergency Medicine", "Surgery"]
+  operating_hours: {
+    "monday": "24/7",
+    "tuesday": "24/7", 
+    "wednesday": "24/7",
+    "thursday": "24/7",
+    "friday": "24/7",
+    "saturday": "24/7",
+    "sunday": "24/7",
+    "emergency": "24/7",
+    "outpatient": "8:00-18:00"
+  }
+  contact_person: "Dr. Sarah Johnson"
+  contact_person_phone: "+1-555-123-4568"
+  contact_person_email: "sarah.johnson@generalmedical.com"
+  emergency_contact: "Emergency Department"
+  emergency_phone: "+1-555-123-9999"
+  website: "https://www.generalmedical.com"
+  timezone: "America/Los_Angeles"
+
+childrens_hospital:
+  type: Hospital
+  name: "Children's Healthcare Center"
+  address: "456 Pediatric Avenue\nKids City, CA 90211"
+  phone: "+1-555-234-5678"
+  email: "info@childrenshealthcare.com"
+  registration_number: "HOSP002"
+  facility_type: "childrens"
+  active: true
+  status: "active"
+  specialties: ["Pediatrics", "Neonatology", "Pediatric Surgery"]
+  operating_hours: {
+    "monday": "24/7",
+    "tuesday": "24/7",
+    "wednesday": "24/7", 
+    "thursday": "24/7",
+    "friday": "24/7",
+    "saturday": "24/7",
+    "sunday": "24/7",
+    "emergency": "24/7"
+  }
+  contact_person: "Dr. Michael Chen"
+  contact_person_phone: "+1-555-234-5679"
+  contact_person_email: "michael.chen@childrenshealthcare.com"
+  website: "https://www.childrenshealthcare.com"
+  timezone: "America/Los_Angeles"
+
+teaching_hospital:
+  type: Hospital
+  name: "University Teaching Hospital"
+  address: "789 Academic Boulevard\nUniversity City, CA 90212"
+  phone: "+1-555-345-6789"
+  email: "info@universityhospital.edu"
+  registration_number: "HOSP003"
+  facility_type: "teaching"
+  active: true
+  status: "active"
+  specialties: ["Internal Medicine", "Surgery", "Psychiatry", "Radiology"]
+  operating_hours: {
+    "monday": "24/7",
+    "tuesday": "24/7",
+    "wednesday": "24/7",
+    "thursday": "24/7", 
+    "friday": "24/7",
+    "saturday": "24/7",
+    "sunday": "24/7",
+    "emergency": "24/7",
+    "outpatient": "7:00-19:00"
+  }
+  contact_person: "Dr. Emily Rodriguez"
+  contact_person_phone: "+1-555-345-6790"
+  contact_person_email: "emily.rodriguez@universityhospital.edu"
+  website: "https://www.universityhospital.edu"
+  timezone: "America/Los_Angeles"
+
+# Clinics
+family_clinic:
+  type: Clinic
+  name: "Family Health Clinic"
+  address: "321 Family Street\nSuburban Town, CA 90213"
+  phone: "+1-555-456-7890"
+  email: "info@familyhealthclinic.com"
+  registration_number: "CLINIC001"
+  facility_type: "primary_care"
+  active: true
+  status: "active"
+  services: ["General Checkup", "Vaccinations", "Lab Testing", "Physical Therapy"]
+  operating_hours: {
+    "monday": "8:00-17:00",
+    "tuesday": "8:00-17:00",
+    "wednesday": "8:00-17:00",
+    "thursday": "8:00-17:00",
+    "friday": "8:00-17:00",
+    "saturday": "9:00-13:00",
+    "walk_in": "8:00-12:00",
+    "appointment": "13:00-17:00"
+  }
+  number_of_doctors: 4
+  accepts_insurance: true
+  accepts_new_patients: true
+  languages_spoken: ["English", "Spanish", "Mandarin"]
+  contact_person: "Maria Gonzalez"
+  contact_person_phone: "+1-555-456-7891"
+  contact_person_email: "maria.gonzalez@familyhealthclinic.com"
+  website: "https://www.familyhealthclinic.com"
+  timezone: "America/Los_Angeles"
+
+urgent_care:
+  type: Clinic
+  name: "QuickCare Urgent Care"
+  address: "654 Urgent Avenue\nFast City, CA 90214"
+  phone: "+1-555-567-8901"
+  email: "info@quickcareurgent.com"
+  registration_number: "CLINIC002"
+  facility_type: "urgent_care"
+  active: true
+  status: "active"
+  services: ["Minor Surgery", "X-ray", "Lab Testing", "Urgent Care"]
+  operating_hours: {
+    "monday": "7:00-22:00",
+    "tuesday": "7:00-22:00",
+    "wednesday": "7:00-22:00",
+    "thursday": "7:00-22:00",
+    "friday": "7:00-22:00",
+    "saturday": "8:00-20:00",
+    "sunday": "8:00-20:00",
+    "walk_in": "7:00-22:00"
+  }
+  number_of_doctors: 6
+  accepts_insurance: true
+  accepts_new_patients: true
+  languages_spoken: ["English", "Spanish"]
+  contact_person: "Dr. James Wilson"
+  contact_person_phone: "+1-555-567-8902"
+  contact_person_email: "james.wilson@quickcareurgent.com"
+  website: "https://www.quickcareurgent.com"
+  timezone: "America/Los_Angeles"
+
+dental_clinic:
+  type: Clinic
+  name: "Bright Smile Dental"
+  address: "987 Dental Drive\nSmile City, CA 90215"
+  phone: "+1-555-678-9012"
+  email: "info@brightsmile.com"
+  registration_number: "CLINIC003"
+  facility_type: "dental"
+  active: true
+  status: "active"
+  services: ["Dental Cleaning", "General Checkup", "Minor Surgery"]
+  operating_hours: {
+    "monday": "8:00-18:00",
+    "tuesday": "8:00-18:00",
+    "wednesday": "8:00-18:00",
+    "thursday": "8:00-18:00",
+    "friday": "8:00-16:00",
+    "appointment": "8:00-18:00"
+  }
+  number_of_doctors: 3
+  accepts_insurance: true
+  accepts_new_patients: false
+  languages_spoken: ["English", "Korean", "Vietnamese"]
+  contact_person: "Dr. Lisa Park"
+  contact_person_phone: "+1-555-678-9013"
+  contact_person_email: "lisa.park@brightsmile.com"
+  website: "https://www.brightsmile.com"
+  timezone: "America/Los_Angeles"
+
+# Inactive facility for testing
+inactive_hospital:
+  type: Hospital
+  name: "Closed Medical Center"
+  address: "999 Closed Street\nGhost Town, CA 90299"
+  phone: "+1-555-999-0000"
+  email: "info@closedmedical.com"
+  registration_number: "HOSP999"
+  facility_type: "general"
+  active: false
+  status: "inactive"
+  specialties: ["General Medicine"]
+  operating_hours: {}
+  timezone: "America/Los_Angeles"

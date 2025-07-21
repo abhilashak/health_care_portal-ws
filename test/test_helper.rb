@@ -2,13 +2,16 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
 require "minitest/mock"
-require "minitest/reporters"
-
-# Set up minitest reporters for better test output
-Minitest::Reporters.use! [
-  Minitest::Reporters::SpecReporter.new,
-  Minitest::Reporters::JUnitReporter.new("test/reports")
-]
+# Set up minitest reporters for better test output if available
+begin
+  require "minitest/reporters"
+  Minitest::Reporters.use! [
+    Minitest::Reporters::SpecReporter.new,
+    Minitest::Reporters::JUnitReporter.new("test/reports")
+  ]
+rescue LoadError
+  # minitest/reporters not available, use default output
+end
 
 module ActiveSupport
   class TestCase
