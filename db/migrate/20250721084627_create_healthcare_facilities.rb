@@ -3,7 +3,7 @@ class CreateHealthcareFacilities < ActiveRecord::Migration[8.0]
     create_table :healthcare_facilities do |t|
       # STI column
       t.string :type, null: false
-      
+
       # Common fields
       t.string :name, null: false
       t.text :address, null: false
@@ -23,10 +23,10 @@ class CreateHealthcareFacilities < ActiveRecord::Migration[8.0]
       t.string :status, default: 'active', null: false
       t.text :description
       t.string :logo_url
-      
+
       # Hospital specific fields
       t.text :specialties, array: true, default: []
-      
+
       # Clinic specific fields
       t.string :facility_type
       t.integer :number_of_doctors
@@ -45,26 +45,26 @@ class CreateHealthcareFacilities < ActiveRecord::Migration[8.0]
     add_index :healthcare_facilities, :phone, unique: true, name: 'index_healthcare_facilities_on_phone'
     add_index :healthcare_facilities, :active, where: 'active = true', name: 'index_healthcare_facilities_on_active_status'
     add_index :healthcare_facilities, :type, name: 'index_healthcare_facilities_on_type'
-    
+
     # Add GIN indexes for array columns
     add_index :healthcare_facilities, :specialties, using: 'gin', name: 'index_healthcare_facilities_on_specialties'
     add_index :healthcare_facilities, :services, using: 'gin', name: 'index_healthcare_facilities_on_services'
     add_index :healthcare_facilities, :languages_spoken, using: 'gin', name: 'index_healthcare_facilities_on_languages_spoken'
-    
+
     # Add GIN index for JSONB column
     add_index :healthcare_facilities, :operating_hours, using: :gin, name: 'index_healthcare_facilities_on_operating_hours'
-    
+
     # Add index for facility type for faster filtering
     add_index :healthcare_facilities, :facility_type, name: 'index_healthcare_facilities_on_facility_type'
-    
+
     # Add index for insurance acceptance
     add_index :healthcare_facilities, :accepts_insurance, where: 'accepts_insurance = true',
               name: 'index_healthcare_facilities_that_accept_insurance'
-    
+
     # Add index for new patients acceptance
     add_index :healthcare_facilities, :accepts_new_patients, where: 'accepts_new_patients = true',
               name: 'index_healthcare_facilities_accepting_new_patients'
-    
+
     # Add a check constraint for email format
     reversible do |dir|
       dir.up do

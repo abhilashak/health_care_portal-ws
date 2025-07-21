@@ -10,9 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_21_100013) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_21_100953) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "doctors", force: :cascade do |t|
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.string "specialization", null: false
+    t.bigint "hospital_id"
+    t.bigint "clinic_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["clinic_id"], name: "index_doctors_on_clinic_id"
+    t.index ["first_name", "last_name"], name: "index_doctors_on_full_name"
+    t.index ["hospital_id"], name: "index_doctors_on_hospital_id"
+    t.index ["specialization"], name: "index_doctors_on_specialization"
+    t.check_constraint "hospital_id IS NOT NULL OR clinic_id IS NOT NULL", name: "doctors_must_belong_to_facility"
+  end
 
   create_table "healthcare_facilities", force: :cascade do |t|
     t.string "type", limit: 50, null: false
@@ -46,12 +61,30 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_21_100013) do
     t.check_constraint "email::text ~~ '%@%'::text", name: "check_facility_email_format"
     t.check_constraint "length(name::text) >= 2", name: "check_facility_name_length"
     t.check_constraint "length(phone::text) >= 10", name: "check_facility_phone_length"
-    t.check_constraint "type::text <> 'Clinic'::text OR (health_care_type::text = ANY (ARRAY['Family Practice'::character varying, 'Urgent Care'::character varying, 'Specialty'::character varying, 'Pediatric'::character varying, 'Internal Medicine'::character varying, 'Cardiology'::character varying, 'Dermatology'::character varying, 'Orthopedic'::character varying, 'Mental Health'::character varying, 'Dental'::character varying, 'Eye Care'::character varying, 'Other'::character varying]::text[]))", name: "check_clinic_valid_healthcare_type"
+    t.check_constraint "type::text <> 'Clinic'::text OR (health_care_type::text = ANY (ARRAY['Family Practice'::character varying::text, 'Urgent Care'::character varying::text, 'Specialty'::character varying::text, 'Pediatric'::character varying::text, 'Internal Medicine'::character varying::text, 'Cardiology'::character varying::text, 'Dermatology'::character varying::text, 'Orthopedic'::character varying::text, 'Mental Health'::character varying::text, 'Dental'::character varying::text, 'Eye Care'::character varying::text, 'Other'::character varying::text]))", name: "check_clinic_valid_healthcare_type"
     t.check_constraint "type::text <> 'Clinic'::text OR length(services_offered) >= 5", name: "check_clinic_services_length"
     t.check_constraint "type::text <> 'Clinic'::text OR services_offered IS NOT NULL AND accepts_walk_ins IS NOT NULL", name: "check_clinic_required_fields"
-    t.check_constraint "type::text <> 'Hospital'::text OR (health_care_type::text = ANY (ARRAY['General'::character varying, 'Specialty'::character varying, 'Teaching'::character varying, 'Psychiatric'::character varying, 'Rehabilitation'::character varying, 'Children'::character varying, 'Cancer'::character varying, 'Heart'::character varying, 'Other'::character varying]::text[]))", name: "check_hospital_valid_healthcare_type"
+    t.check_constraint "type::text <> 'Hospital'::text OR (health_care_type::text = ANY (ARRAY['General'::character varying::text, 'Specialty'::character varying::text, 'Teaching'::character varying::text, 'Psychiatric'::character varying::text, 'Rehabilitation'::character varying::text, 'Children'::character varying::text, 'Cancer'::character varying::text, 'Heart'::character varying::text, 'Other'::character varying::text]))", name: "check_hospital_valid_healthcare_type"
     t.check_constraint "type::text <> 'Hospital'::text OR bed_capacity >= 0", name: "check_hospital_bed_capacity_positive"
     t.check_constraint "type::text <> 'Hospital'::text OR bed_capacity IS NOT NULL AND emergency_services IS NOT NULL", name: "check_hospital_required_fields"
-    t.check_constraint "type::text = ANY (ARRAY['Hospital'::character varying, 'Clinic'::character varying]::text[])", name: "check_valid_facility_type"
+    t.check_constraint "type::text = ANY (ARRAY['Hospital'::character varying::text, 'Clinic'::character varying::text])", name: "check_valid_facility_type"
   end
+
+  create_table "patients", force: :cascade do |t|
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.date "date_of_birth", null: false
+    t.string "email", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["date_of_birth"], name: "index_patients_on_date_of_birth"
+    t.index ["email"], name: "unique_patient_emails", unique: true
+    t.index ["first_name", "last_name"], name: "index_patients_on_full_name"
+    t.check_constraint "date_of_birth <= CURRENT_DATE", name: "patients_birth_date_not_future"
+    t.check_constraint "date_of_birth >= (CURRENT_DATE - 'P150Y'::interval)", name: "patients_reasonable_age"
+    t.check_constraint "email::text ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,}$'::text", name: "patients_email_format_check"
+  end
+
+  add_foreign_key "doctors", "healthcare_facilities", column: "clinic_id", on_delete: :nullify
+  add_foreign_key "doctors", "healthcare_facilities", column: "hospital_id", on_delete: :nullify
 end
