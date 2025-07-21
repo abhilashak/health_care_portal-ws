@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_21_111033) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_21_141220) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -23,6 +23,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_21_111033) do
     t.integer "duration_minutes", default: 30
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "appointment_type"
     t.index ["appointment_date"], name: "index_appointments_on_appointment_date"
     t.index ["doctor_id", "appointment_date"], name: "index_appointments_on_doctor_and_date"
     t.index ["doctor_id"], name: "index_appointments_on_doctor_id"

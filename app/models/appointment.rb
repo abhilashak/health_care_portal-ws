@@ -11,7 +11,8 @@ class Appointment < ApplicationRecord
   # Validations
   validates :appointment_date, presence: true
   validates :status, presence: true, inclusion: { in: STATUSES, message: "%{value} is not a valid status" }
-  validates :duration_minutes, presence: true, numericality: { greater_than: 0, less_than_or_equal_to: 480 }
+  validates :duration_minutes, presence: true, numericality: { greater_than: 0, less_than_or_equal_to: 480, message: "must be between 15 and 240 minutes" }
+  validates :appointment_type, allow_blank: true, inclusion: { in: %w[consultation checkup follow_up emergency procedure], message: "must be a valid appointment type" }
   validate :appointment_date_in_future
   # Temporarily disable overlap validations to fix core functionality first
   # validate :doctor_availability
@@ -84,7 +85,7 @@ class Appointment < ApplicationRecord
     end
   end
 
-  # TODO: update this
+  # TODO: update later if needed
   def doctor_availability
     return unless doctor && appointment_date && duration_minutes
     return if persisted? && !appointment_date_changed? && !duration_minutes_changed? # Skip if no relevant changes

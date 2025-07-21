@@ -68,11 +68,11 @@ class AppointmentTest < ApplicationModelTestCase
   test "should validate duration_minutes numericality" do
     appointment = Appointment.new(@valid_attributes.merge(duration_minutes: 0))
     assert_not appointment.valid?
-    assert_includes appointment.errors[:duration_minutes], "must be greater than 0"
+    assert_includes appointment.errors[:duration_minutes], "must be between 15 and 240 minutes"
 
     appointment = Appointment.new(@valid_attributes.merge(duration_minutes: 500))
     assert_not appointment.valid?
-    assert_includes appointment.errors[:duration_minutes], "must be less than or equal to 480"
+    assert_includes appointment.errors[:duration_minutes], "must be between 15 and 240 minutes"
 
     appointment = Appointment.new(@valid_attributes.merge(duration_minutes: 30))
     assert appointment.valid?
@@ -212,5 +212,28 @@ class AppointmentTest < ApplicationModelTestCase
     assert_raises(ActiveRecord::StatementInvalid) do
       appointment.update_column(:status, "invalid_status")
     end
+  end
+
+  # Appointment Type Tests
+  test "should allow valid appointment types" do
+    valid_types = %w[consultation checkup follow_up emergency procedure]
+    valid_types.each do |type|
+      appointment = Appointment.new(@valid_attributes.merge(appointment_type: type))
+      assert appointment.valid?, "#{type} should be a valid appointment type"
+    end
+  end
+
+  test "should reject invalid appointment types" do
+    appointment = Appointment.new(@valid_attributes.merge(appointment_type: "invalid_type"))
+    assert_not appointment.valid?
+    assert_includes appointment.errors[:appointment_type], "must be a valid appointment type"
+  end
+
+  test "should allow blank appointment type" do
+    appointment = Appointment.new(@valid_attributes.merge(appointment_type: nil))
+    assert appointment.valid?
+
+    appointment = Appointment.new(@valid_attributes.merge(appointment_type: ""))
+    assert appointment.valid?
   end
 end
