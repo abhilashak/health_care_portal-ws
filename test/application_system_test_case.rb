@@ -2,9 +2,9 @@ require "test_helper"
 
 # Configure Capybara for system tests
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  driven_by :selenium, 
+  driven_by :selenium,
     using: :headless_chrome,
-    screen_size: [1400, 1400],
+    screen_size: [ 1400, 1400 ],
     options: {
       browser: :chrome,
       desired_capabilities: Selenium::WebDriver::Remote::Capabilities.chrome(
@@ -22,7 +22,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   # Helper method to wait for JavaScript to finish executing
   def wait_for_js
     Timeout.timeout(Capybara.default_max_wait_time) do
-      loop until page.evaluate_script('document.readyState') == 'complete'
+      loop until page.evaluate_script("document.readyState") == "complete"
     end
   end
 
@@ -34,22 +34,22 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   end
 
   def finished_all_ajax_requests?
-    page.evaluate_script('jQuery.active').zero?
+    page.evaluate_script("jQuery.active").zero?
   rescue
     true # When there's no jQuery
   end
 
   # Take a screenshot on test failure
   def take_failed_screenshot
-    return unless ENV['CI'].blank? # Skip in CI
-    
+    return unless ENV["CI"].blank? # Skip in CI
+
     timestamp = Time.current.strftime("%Y%m%d%H%M%S")
     filename = "screenshot-failure-#{timestamp}.png"
     path = Rails.root.join("tmp/screenshots/#{filename}")
-    
+
     # Create screenshots directory if it doesn't exist
     FileUtils.mkdir_p(File.dirname(path))
-    
+
     # Take the screenshot
     save_screenshot(path)
     puts "Screenshot saved to: #{path}"
