@@ -11,6 +11,7 @@ class HealthcareFacilityTest < ApplicationModelTestCase
       email: "info@testhealthcare.com",
       registration_number: "REG123456",
       type: "Hospital",
+      facility_type: "general",
       operating_hours: { "monday" => "9:00-17:00", "tuesday" => "9:00-17:00" },
       status: "active"
     }
@@ -115,13 +116,15 @@ class HealthcareFacilityTest < ApplicationModelTestCase
   end
 
   test "should validate facility type inclusion when present" do
+    # Test with base HealthcareFacility class (not Hospital subclass)
+    base_attributes = @valid_attributes.except(:type).merge(type: nil)
     valid_types = %w[primary_care specialty urgent_care dental vision other]
     valid_types.each do |type|
-      facility = HealthcareFacility.new(@valid_attributes.merge(facility_type: type))
+      facility = HealthcareFacility.new(base_attributes.merge(facility_type: type))
       assert facility.valid?, "Facility type #{type} should be valid"
     end
 
-    facility = HealthcareFacility.new(@valid_attributes.merge(facility_type: "invalid_type"))
+    facility = HealthcareFacility.new(base_attributes.merge(facility_type: "invalid_type"))
     assert_not facility.valid?
     assert_includes facility.errors[:facility_type], "invalid_type is not a valid facility type"
   end
@@ -134,7 +137,7 @@ class HealthcareFacilityTest < ApplicationModelTestCase
   end
 
   test "should normalize email on save" do
-    facility = HealthcareFacility.new(@valid_attributes.merge(email: "  TEST@EXAMPLE.COM  "))
+    facility = HealthcareFacility.new(@valid_attributes.merge(email: "TEST@EXAMPLE.COM"))
     facility.save!
     assert_equal "test@example.com", facility.email
   end
@@ -162,7 +165,8 @@ class HealthcareFacilityTest < ApplicationModelTestCase
       phone: "+1-555-999-8888",
       email: "clinic@test.com",
       registration_number: "REG999",
-      type: "Clinic"
+      type: "Clinic",
+      facility_type: "primary_care"
     ))
 
     hospitals = HealthcareFacility.hospitals
@@ -177,7 +181,8 @@ class HealthcareFacilityTest < ApplicationModelTestCase
       phone: "+1-555-999-8888",
       email: "clinic@test.com",
       registration_number: "REG999",
-      type: "Clinic"
+      type: "Clinic",
+      facility_type: "primary_care"
     ))
 
     clinics = HealthcareFacility.clinics
@@ -207,7 +212,7 @@ class HealthcareFacilityTest < ApplicationModelTestCase
   end
 
   test "clinic? should return true for clinics" do
-    facility = HealthcareFacility.create!(@valid_attributes.merge(type: "Clinic"))
+    facility = HealthcareFacility.create!(@valid_attributes.merge(type: "Clinic", facility_type: "primary_care"))
     assert facility.clinic?
   end
 

@@ -10,7 +10,7 @@ class Hospital < HealthcareFacility
   ].freeze
 
   # Validations
-  validates :facility_type, inclusion: { in: HOSPITAL_TYPES, message: "%{value} is not a valid hospital type" }
+  validates :facility_type, inclusion: { in: HOSPITAL_TYPES, message: "%{value} is not a valid hospital type" }, allow_nil: true
   validate :validate_specialties
 
   # Scopes

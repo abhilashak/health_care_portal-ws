@@ -14,7 +14,7 @@ class HealthcareFacility < ApplicationRecord
                     format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }
   validates :registration_number, presence: true, uniqueness: true
   validates :status, inclusion: { in: STATUSES, message: "%{value} is not a valid status" }
-  validates :facility_type, inclusion: { in: FACILITY_TYPES, message: "%{value} is not a valid facility type" }, allow_nil: true
+  validates :facility_type, inclusion: { in: FACILITY_TYPES, message: "%{value} is not a valid facility type" }, allow_nil: true, if: :validate_base_facility_type?
 
   # Scopes
   scope :active, -> { where(active: true) }
@@ -64,5 +64,11 @@ class HealthcareFacility < ApplicationRecord
 
   def normalize_email
     self.email = email.to_s.downcase.strip if email.present?
+  end
+
+  def validate_base_facility_type?
+    # Only validate base facility types for direct HealthcareFacility instances
+    # Subclasses (Hospital, Clinic) have their own facility_type validations
+    self.class == HealthcareFacility
   end
 end

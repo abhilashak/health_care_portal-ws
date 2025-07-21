@@ -12,7 +12,7 @@ class Clinic < HealthcareFacility
   ].freeze
 
   # Validations
-  validates :facility_type, inclusion: { in: CLINIC_TYPES, message: "%{value} is not a valid clinic type" }
+  validates :facility_type, inclusion: { in: CLINIC_TYPES, message: "%{value} is not a valid clinic type" }, allow_nil: true
   validates :number_of_doctors, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
   validate :validate_services
 

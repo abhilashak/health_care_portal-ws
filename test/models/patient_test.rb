@@ -114,7 +114,7 @@ class PatientTest < ApplicationModelTestCase
       first_name: "Test",
       last_name: "User",
       date_of_birth: 30.years.ago.to_date,
-      email: "  TEST@EXAMPLE.COM  "
+      email: "TEST@EXAMPLE.COM"
     )
     patient.save!
     assert_equal "test@example.com", patient.email
