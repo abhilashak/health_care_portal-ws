@@ -93,7 +93,7 @@ class DoctorsController < ApplicationController
   end
 
   def destroy
-    if @doctor.appointments.upcoming.exists?
+    if @doctor.appointments.upcoming.where.not(status: [ "cancelled", "completed" ]).exists?
       redirect_to @doctor, alert: "Doctor cannot be deleted because they have upcoming appointments."
       return
     end
@@ -210,8 +210,7 @@ class DoctorsController < ApplicationController
 
   def doctor_params
     params.require(:doctor).permit(
-      :first_name, :last_name, :specialization, :hospital_id, :clinic_id,
-      :phone, :email, :license_number, :years_of_experience
+      :first_name, :last_name, :specialization, :hospital_id, :clinic_id
     )
   end
 
